@@ -54,10 +54,18 @@ app.get('/alltrips', async (req, res) => {
     try {
         let connection = await mysql.createConnection(dbConfig);
         const [rows] = await connection.execute('SELECT * FROM trips');
-        res.json(rows);
+
+        const formattedRows = rows.map(trip => ({
+            ...trip,
+            trip_date: trip.trip_date
+                ? trip.trip_date.toISOString().split('T')[0]
+                : null
+        }));
+
+        res.json(formattedRows);
     } catch (err) {
         console.error(err);
-        res.status(500).json({message: 'Server error for alltrips'});
+        res.status(500).json({ message: 'Server error for alltrips' });
     }
 });
 
