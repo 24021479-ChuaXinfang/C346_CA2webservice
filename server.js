@@ -69,18 +69,18 @@ app.get('/alltrips', async (req, res) => {
     }
 });
 
-// Route: Add card
-app.post('/addcard', async (req, res) => {
-    const { card_name, card_pic } = req.body;
+// Route: Add trip
+app.post('/addtrip', async(req, res) => {
+    const { mode, distance_km, carbon_kg, trip_date  } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('INSERT INTO cards (card_name, card_pic) VALUES (?, ?)', [card_name, card_pic]);
-        res.status(201).json({message: 'Card ' + card_name + ' added successfully'});
+        await connection.execute('INSERT INTO trips (mode, distance_km, carbon_kg, trip_date) VALUES (?,?,?,?)', [mode, distance_km, carbon_kg, trip_date]);
+        res.status(201).json({message: 'Trip added successfully'});
     } catch (err) {
         console.error(err);
-        res.status(500).json({message: 'Server error - could not add card ' + card_name});
+        res.status(500).json({ message: 'Server error - could not add trip'})
     }
-});
+})
 
 // Route: Delete card
 app.delete('/deletecard/:id', async (req, res) => {
