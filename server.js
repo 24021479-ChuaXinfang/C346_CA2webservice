@@ -105,6 +105,26 @@ app.delete('/deletecard/:id', async (req, res) => {
     }
 });
 
+// Route: Delete all trips
+app.delete('/deletealltrips', async (req, res) => {
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+
+        const [result] = await connection.execute(
+            'DELETE FROM trips'
+        );
+
+        res.json({
+            message: 'All trips deleted successfully',
+            deletedCount: result.affectedRows
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error deleting all trips' });
+    }
+});
+
+
 // Route: Update card
 app.put('/updatecard/:id', async (req, res) => {
     const { id } = req.params;
