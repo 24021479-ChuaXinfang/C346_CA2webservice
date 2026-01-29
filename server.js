@@ -82,26 +82,26 @@ app.post('/addtrip', async(req, res) => {
     }
 })
 
-// Route: Delete card
-app.delete('/deletecard/:id', async (req, res) => {
+// Route: Delete A Trip
+app.delete('/deletetrip/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
         const connection = await mysql.createConnection(dbConfig);
 
         const [result] = await connection.execute(
-            'DELETE FROM cards WHERE id = ?',
+            'DELETE FROM trips WHERE id = ?',
             [id]
         );
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Card not found' });
+            return res.status(404).json({ message: 'Trip not found' });
         }
 
-        res.json({ message: `Card ${id} deleted successfully` });
+        res.json({ message: `Trip ${id} deleted successfully` });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error deleting card' });
+        res.status(500).json({ message: 'Server error deleting trip' });
     }
 });
 
@@ -125,26 +125,28 @@ app.delete('/deletealltrips', async (req, res) => {
 });
 
 
-// Route: Update card
-app.put('/updatecard/:id', async (req, res) => {
+// Route: Update trip
+app.put('/updatetrip/:id', async (req, res) => {
     const { id } = req.params;
-    const { card_name, card_pic } = req.body;
+    const { mode, distance_km,carbon_kg,trip_date} = req.body;
 
     try {
         const connection = await mysql.createConnection(dbConfig);
 
         const [result] = await connection.execute(
-            'UPDATE cards SET card_name = ?, card_pic = ? WHERE id = ?',
-            [card_name, card_pic, id]
+            'UPDATE cards SET mode = ?, distance_km = ?, carbon_kg = ?, trip_date = ? WHERE id = ?',
+            [mode, distance_km, carbon_kg, trip_date, id]
         );
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Card not found' });
+            return res.status(404).json({ message: 'Trip not found' });
         }
 
-        res.json({ message: `Card ${id} updated successfully` });
+        res.json({ message: `Trip ${id} updated successfully` });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error updating card' });
+        res.status(500).json({ message: 'Server error updating trip' });
     }
 });
+
+
