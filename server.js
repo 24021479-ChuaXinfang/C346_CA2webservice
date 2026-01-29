@@ -134,7 +134,7 @@ app.put('/updatetrip/:id', async (req, res) => {
         const connection = await mysql.createConnection(dbConfig);
 
         const [result] = await connection.execute(
-            'UPDATE cards SET mode = ?, distance_km = ?, carbon_kg = ?, trip_date = ? WHERE id = ?',
+            'UPDATE trips SET mode = ?, distance_km = ?, carbon_kg = ?, trip_date = ? WHERE id = ?',
             [mode, distance_km, carbon_kg, trip_date, id]
         );
 
